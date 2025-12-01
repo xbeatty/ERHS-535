@@ -34,7 +34,7 @@ library(stringr)
 
 ## Loading the data
 
-```{r pressure, echo=FALSE}
+```{r reading in the data}
 
 tuesdata <- tidytuesdayR::tt_load('2025-10-14')
 ## OR
@@ -49,4 +49,9 @@ food_security <- readr::read_csv('https://raw.githubusercontent.com/rfordatascie
 
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## Selecting only ??? Data
+
+```{r}
+
+```
+
