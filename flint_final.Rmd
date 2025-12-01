@@ -1,6 +1,6 @@
 ---
 title: "Final Project- Flint"
-author: "Madison Johnson"
+author: "Madison Johnson, Kapahi Kawai Puaa, Xuan Beatty"
 date: "2025-12-01"
 output: html_document
 ---
