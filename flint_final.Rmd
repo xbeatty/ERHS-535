@@ -1,0 +1,11 @@
+---
+title: "Final Project- Flint"
+author: "Madison Johnson"
+date: "2025-12-01"
+output: html_document
+---
+#the flexdashboard interaction and presentation are what's going to influence our grade the most!
+
+#Include text block that explains the data and data source as well as what the dashboard can be used for and how to explore it. Dashboard should have at least 3 planes with output (figure or tables) and at least one should be interactive. We can include all this in a single HTML page 
+
+#Part of the group should work on organizing the flexdashboard and the others should work on coding and creating graphs/figures. 
