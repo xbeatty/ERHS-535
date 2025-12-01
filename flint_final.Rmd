@@ -4,6 +4,15 @@ author: "Madison Johnson, Kapahi Kawai Puaa, Xuan Beatty"
 date: "2025-12-01"
 output: html_document
 ---
+
+```{r libraries, include=FALSE}
+library(tidyverse)
+library(tidytuesdayR)
+
+#we will need a library like plotly and leaflet
+```
+
+
 #the flexdashboard interaction and presentation are what's going to influence our grade the most!
 
 #Include text block that explains the data and data source as well as what the dashboard can be used for and how to explore it. Dashboard should have at least 3 planes with output (figure or tables) and at least one should be interactive. We can include all this in a single HTML page 
