@@ -10,6 +10,8 @@ tuesdata <- tidytuesdayR::tt_load('2025-11-04')
 
 flint_mdeq <- tuesdata$flint_mdeq
 flint_vt <- tuesdata$flint_vt
+head(flint_mdeq)
+head(flint_vt)
 #MJ 11/19: Andreas and I are confused beyond this point
 #MJ 11/19: KP, do we need that test12187 data set below?
 #MJ 11/19: Or just the two datasets above that I loaded? 
