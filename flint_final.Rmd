@@ -12,6 +12,14 @@ library(tidytuesdayR)
 #we will need a library like plotly and leaflet
 ```
 
+```{r factor_df}
+factor_foodsec <- as.factor(food_security$Item)
+levels(factor_foodsec)
+factor_foodsec <- as.factor(food_security$Area)
+levels(factor_foodsec)
+```
+
+
 
 #the flexdashboard interaction and presentation are what's going to influence our grade the most!
 
