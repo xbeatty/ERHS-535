@@ -24,10 +24,6 @@ children_food <- food_south %>%
   select(Year_Start, Year_End, Area, Item, Value)
 
 children_food %>% 
-  ggplot(aes(x = Area, y = Value, Fill = Item)) +
-  geom_col()
-
-children_food %>% 
   ggplot(aes(x = fct_reorder(Area, Value), y = Value, fill = Item)) +
   geom_col(position = "dodge") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
@@ -43,7 +39,7 @@ children_food %>%
   labs(x = NULL,
        title = "Number of Children Modeled to be Overweight or Stunted",
        y = "Number of Children (millions)")
-#possibility of adding facet_wrap by Item too 
+#possibility of adding facet_wrap by Item too, separte overweight and stunted
 
 #individual graphs made- I dont think needed if I can do facet_wrap above
 overweight <- children_food %>%
