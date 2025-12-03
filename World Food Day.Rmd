@@ -50,10 +50,11 @@ food_security <- readr::read_csv('https://raw.githubusercontent.com/rfordatascie
 ```
 
 ```{r factors}
-factor_foodsec <- as.factor(food_security$Item)
-levels(factor_foodsec)
-factor_foodsec <- as.factor(food_security$Area)
-levels(factor_foodsec)
+food_security$Item <- as.factor(food_security$Item)
+food_security$Area <- as.factor(food_security$Area)
+View(food_security)
+str(food_security)
+
 ```
 
 
