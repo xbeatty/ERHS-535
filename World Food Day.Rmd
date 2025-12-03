@@ -49,6 +49,15 @@ food_security <- readr::read_csv('https://raw.githubusercontent.com/rfordatascie
 
 ```
 
+```{r factors}
+factor_foodsec <- as.factor(food_security$Item)
+levels(factor_foodsec)
+factor_foodsec <- as.factor(food_security$Area)
+levels(factor_foodsec)
+```
+
+
+
 ## Selecting only ??? Data
 
 ```{r selecting for ???}
