@@ -61,9 +61,13 @@ str(food_security)
 
 ## Selecting only ??? Data
 
-```{r selecting for ???}
+```{r selecting for countries in South America}
 
-
+food_south <- food_security %>%
+  filter(Area == c("Argentina", "Bolivia", "Brazil", "Chile","Colombia", "Ecuador",
+                   "Guyana", "Paraguay", "Uruguay", "Peru", "Suriname", "Venezuela (Bolivarian Republic of)")  
+         )
+View(food_south)
 
 ```
 
