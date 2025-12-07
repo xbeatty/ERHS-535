@@ -30,6 +30,7 @@ library(purrr)
 library(ggplot2)
 library(stringr)
 library(tidytuesdayR)
+library(forcats)
 ```
 
 ## Loading the data
