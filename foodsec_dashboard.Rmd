@@ -28,7 +28,7 @@ Column {.tabset}
 
 ```
 
-### Chart C
+### Children
 
 ```{r children info, message=FALSE, warning=FALSE}
 library(tidyverse)
