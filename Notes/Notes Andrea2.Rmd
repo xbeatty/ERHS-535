@@ -1,0 +1,86 @@
+---
+title: "Food insecurity in South Americav"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(plotly)
+library(maps)
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+knitr::opts_chunk$set(message = FALSE)
+```
+
+```{r}
+# Filter only male & female prevalence
+adult_food <- food_south %>% 
+  filter(Item %in% c(
+    "Prevalence of moderate or severe food insecurity in the male adult population (percent) (3-year average)",
+    "Prevalence of moderate or severe food insecurity in the female adult population (percent) (3-year average)",
+    "Share of dietary energy supply derived from cereals, roots and tubers (percent) (3-year average)"
+  )) %>% 
+  select(Area, Item, Value)
+
+# Average repeated values
+adult_food_clean <- adult_food %>% 
+  group_by(Area, Item) %>% 
+  summarise(Value = mean(Value), .groups = "drop")
+
+#create food map
+food_map <- adult_food_clean %>% 
+  filter(str_detect(Item, "food insecurity")) %>% 
+  mutate(sex = case_when(
+    str_detect(Item, "female") ~ "Female",
+    str_detect(Item, "male") ~ "Male",
+    TRUE ~ NA_character_
+  ))
+
+
+# Load world map
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+names(world)
+View(world)
+
+#Filter only for countires in SA
+map_sa <- world %>%
+  filter(sovereignt %in% c("Argentina", "Bolivia", "Brazil", "Chile","Colombia", "Ecuador",
+                   "Guyana", "Paraguay", "Uruguay", "Peru", "Suriname", "Venezuela")  
+         )
+View(map_sa)
+
+# Join your data to the map
+map_joined <- map_sa %>% 
+  left_join(food_map, by = c("sovereignt" = "Area"))
+
+# 6. Quick check
+map_joined %>% filter(sex == "Male") %>% select(sovereignt, Value) %>% head()
+
+##MAP
+ggplot(map_joined %>% filter(sex == "Female")) +
+  geom_sf(aes(fill = Value), color = "white") +
+  scale_fill_viridis_c(option = "C", na.value = "grey80") +
+  labs(
+    title = "Female Food Insecurity (Moderate or Severe)",
+    fill  = "Percent"
+  ) +
+  theme_minimal()
+
+##MAP
+ggplot(map_joined %>% filter(sex == "Male")) +
+  geom_sf(aes(fill = Value), color = "white") +
+  scale_fill_viridis_c(option = "D", na.value = "grey80") +
+  labs(
+    title = "Male Food Insecurity (Moderate or Severe)",
+    fill  = "Percent"
+  ) +
+  theme_minimal()
+
+
+
+```

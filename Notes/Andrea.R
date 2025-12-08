@@ -9,7 +9,7 @@ library(ggplot2)
 library(stringr)
 library(tidytuesdayR)
 library(forcats)
-```
+
 
 food_security <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-10-14/food_security.csv')
 
@@ -85,9 +85,9 @@ adult_food_clean %>%
   )) +
  geom_col(position = position_dodge2(width = 0.85), width = 0.8) +
   geom_text(aes(label = round(Value, 1)), ##add numbers
-            position = position_dodge2(width = 0.7), 
-            vjust = -0.2,
-            size = 3) +
+            position = position_dodge2(width = 0.8), 
+            vjust = 0.4, ##number centered to line
+            size = 3.2) +
   
   scale_fill_manual(
     name = "Indicator",
@@ -115,3 +115,30 @@ adult_food_clean %>%
     legend.position = "bottom",
     axis.text.y = element_text(size = 11)
   )
+
+##Analysis
+
+#From the countries reported, the carbohydrate (cereal, roots and tubers) is at least
+#1/3 of the diet or above in all countries. In Peru, carbohydrates makes more than half of the diet.
+
+##There is no specifi relationship between carbohydrates and food insecurity in all countries
+#however, Brazil has the lowest food insecurity of the rgion and the lowest carbohidrate rich diet,
+#which could explain that this popilation have more access to other important food groups (protein, vegetables)
+
+##The countries with lowest food insecurity are Uruguay (only female reported), chile and
+#brazil.
+
+##Venezuela did not report any information about food insecurity. This could be related with the
+##current government control, hyperinflation and economic collapse seeing in the country 
+##in the last decade. Moreover,  The government restricts independent data collection,
+#making comprehensive, real-time assessments difficult for international bodies.
+
+##Interestingly, in countries where food insecurity is reported for males and females (Peru, Argentina
+#paraguay, chile and brazil) the food insecurity is higher on females than males. Some researchers suggested
+#that this could be due to entrenched gender inequalities: they earn less, have less access to resources
+#(land, credit, education), carry the heavier burden of unpaid care work, and often eat last due to cultural norms,
+#limiting their own nutrition and income-generating potential, even when they manage household food for everyone else. 
+
+#Finally, among the countries reported, Argentina has the highest food insecurity in females and the second 
+##highest in males in the region. This also could be related to the ongoing economic crisis marked by hyperinflation
+#(though recently slowing), deep recession, soaring poverty (over 38%), job losses, and currency instability, 
