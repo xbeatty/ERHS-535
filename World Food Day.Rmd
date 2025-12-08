@@ -52,6 +52,13 @@ food_security <- readr::read_csv('https://raw.githubusercontent.com/rfordatascie
 ```
 ## Examining the data
 
+```{r factors}
+food_security$Item <- as.factor(food_security$Item)
+food_security$Area <- as.factor(food_security$Area)
+
+
+```
+
 ## Selecting for South American Countries
 
 ```{r selecting for countries in South America}
@@ -60,7 +67,7 @@ food_south <- food_security %>%
   filter(Area == c("Argentina", "Bolivia", "Brazil", "Chile","Colombia", "Ecuador",
                    "Guyana", "Paraguay", "Uruguay", "Peru", "Suriname", "Venezuela (Bolivarian Republic of)")  
          )
-View(food_south)
+
 
 ```
 
