@@ -81,7 +81,7 @@ food_map <- adult_food_clean %>%
 
 world <- ne_countries(scale = "medium", returnclass = "sf")
 names(world)
-View(world)
+
 
 #Filter only for countires in SA
 map_sa <- world %>%
@@ -170,4 +170,6 @@ ggplot(children_food_clean, aes(y = fct_reorder(Area, Value), x = Value, fill = 
     legend.position = "right"
   )
 ```
+
+Across most countries, stunting is more prevalent than overweight in Peru, Ecuador, and Venezuela, while in Brazil, overweight surpasses stunting.
 
