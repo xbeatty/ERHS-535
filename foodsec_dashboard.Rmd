@@ -80,8 +80,6 @@ food_map <- adult_food_clean %>%
 # Load world map
 
 world <- ne_countries(scale = "medium", returnclass = "sf")
-names(world)
-
 
 #Filter only for countires in SA
 map_sa <- world %>%

@@ -104,6 +104,6 @@ ggplot(map_joined %>% filter(sex == "Male")) +
   theme_minimal()
 
 ##Find a way that both maps are showed together with the same size
-##INclude conclusions
+##Include conclusions
 
 ```
