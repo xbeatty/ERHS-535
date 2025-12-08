@@ -31,17 +31,18 @@ library(ggplot2)
 library(stringr)
 library(tidytuesdayR)
 library(forcats)
+library(tidytuesdayR)
 ```
 
 ## Loading the data
 
 ```{r reading in the data}
 
-tuesdata <- tidytuesdayR::tt_load('2025-10-14')
+#tuesdata <- tidytuesdayR::tt_load('2025-10-14')
 ## OR
-tuesdata <- tidytuesdayR::tt_load(2025, week = 41)
+#tuesdata <- tidytuesdayR::tt_load(2025, week = 41)
 
-food_security <- tuesdata$food_security
+#food_security <- tuesdata$food_security
 
 # Option 2: Read directly from GitHub
 
@@ -49,18 +50,16 @@ food_security <- readr::read_csv('https://raw.githubusercontent.com/rfordatascie
 
 
 ```
+## Examining the data
 
 ```{r factors}
 food_security$Item <- as.factor(food_security$Item)
 food_security$Area <- as.factor(food_security$Area)
-View(food_security)
-str(food_security)
+
 
 ```
 
-
-
-## Selecting only ??? Data
+## Selecting for South American Countries
 
 ```{r selecting for countries in South America}
 
@@ -68,9 +67,11 @@ food_south <- food_security %>%
   filter(Area == c("Argentina", "Bolivia", "Brazil", "Chile","Colombia", "Ecuador",
                    "Guyana", "Paraguay", "Uruguay", "Peru", "Suriname", "Venezuela (Bolivarian Republic of)")  
          )
-View(food_south)
+
 
 ```
+
+## Examining the data for children in South America
 
 ```{r Children Graph}
 children_food <- food_south %>% 
@@ -79,24 +80,39 @@ children_food <- food_south %>%
     "Number of children under 5 years of age who are stunted (modeled estimates) (million)")) %>% 
   select(Year_Start, Year_End, Area, Item, Value)
 
-children_food %>% 
-  ggplot(aes(x = fct_reorder(Area, Value), y = Value, fill = Item)) +
+children_food_clean <- children_food %>%
+  mutate(
+    Area = as.character(Area),  # ensure it's character
+    Area = str_replace(Area, " \\(Bolivarian Republic of\\)", "")  # remove parentheses
+  )
+
+ggplot(children_food_clean, aes(y = fct_reorder(Area, Value), x = Value, fill = Item)) +
   geom_col(position = "dodge") +
-  scale_fill_manual(name = "Child Condition",
+  scale_fill_manual(
+    name = "Observation",
     values = c(
       "Number of children under 5 years of age who are overweight (modeled estimates) (million)" = "blue",
-      "Number of children under 5 years of age who are stunted (modeled estimates) (million)" = "limegreen"),
+      "Number of children under 5 years of age who are stunted (modeled estimates) (million)" = "limegreen"
+    ),
     labels = c(
       "Number of children under 5 years of age who are overweight (modeled estimates) (million)" = "Overweight",
-      "Number of children under 5 years of age who are stunted (modeled estimates) (million)" = "Stunted")) +
-  labs(x = NULL,
-       title = "Number of Children Modeled to be Overweight or Stunted",
-       y = "Number of Children (millions)") +
+      "Number of children under 5 years of age who are stunted (modeled estimates) (million)" = "Stunted"
+    )
+  ) +
+  labs(
+    y = NULL,
+    x = "Number of Children (millions)",
+    title = "Nutrition in South American Children Under 5"
+  ) +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1),
-        legend.direction = "vertical",
-        legend.position = "bottom")
+  theme(
+    legend.direction = "vertical",
+    legend.position = "right"
+  )
+
 
 #add facet_wrap(~ Item) to plot overweight vs stunted in separate graphs
 ```
+
+
 
