@@ -1,0 +1,83 @@
+---
+title: "Food Security in South America"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r KP Info}
+
+```
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r Adult Info}
+
+```
+
+### Chart C
+
+```{r children info, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(ggthemes)
+food_security <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-10-14/food_security.csv')
+
+food_security$Item <- as.factor(food_security$Item)
+food_security$Area <- as.factor(food_security$Area)
+
+food_south <- food_security %>%
+  filter(Area == c("Argentina", "Bolivia", "Brazil", "Chile","Colombia", "Ecuador",
+                   "Guyana", "Paraguay", "Uruguay", "Peru", "Suriname", "Venezuela (Bolivarian Republic of)")  
+         )
+
+children_food <- food_south %>% 
+  filter(Item %in% c(
+    "Number of children under 5 years of age who are overweight (modeled estimates) (million)", 
+    "Number of children under 5 years of age who are stunted (modeled estimates) (million)")) %>% 
+  select(Year_Start, Year_End, Area, Item, Value)
+
+children_food_clean <- children_food %>%
+  mutate(
+    Area = as.character(Area),  # ensure it's character
+    Area = str_replace(Area, " \\(Bolivarian Republic of\\)", "")  # remove parentheses
+  )
+
+ggplot(children_food_clean, aes(y = fct_reorder(Area, Value), x = Value, fill = Item)) +
+  geom_col(position = "dodge") +
+  scale_fill_manual(
+    name = "Observation",
+    values = c(
+      "Number of children under 5 years of age who are overweight (modeled estimates) (million)" = "blue",
+      "Number of children under 5 years of age who are stunted (modeled estimates) (million)" = "limegreen"
+    ),
+    labels = c(
+      "Number of children under 5 years of age who are overweight (modeled estimates) (million)" = "Overweight",
+      "Number of children under 5 years of age who are stunted (modeled estimates) (million)" = "Stunted"
+    )
+  ) +
+  labs(
+    y = NULL,
+    x = "Number of Children (millions)",
+    title = "Nutrition in South American Children Under 5"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.direction = "vertical",
+    legend.position = "right"
+  )
+```
+
