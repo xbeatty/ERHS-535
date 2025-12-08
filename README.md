@@ -1,6 +1,6 @@
-1. Project Title: Examining Health and Nutrition in South America
+Project Title: Examining Health and Nutrition in South America
 
-2. Description / Purpose: This project analyzes health, nutrition, and 
+Description / Purpose: This project analyzes health, nutrition, and 
 socio-economic indicators across South American countries, including child and 
 adult health outcomes, GDP, and measures of political stability. It visualizes 
 and explores patterns and relationships among these factors to better understand 
