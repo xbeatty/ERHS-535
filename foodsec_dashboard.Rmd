@@ -13,7 +13,7 @@ library(flexdashboard)
 Column {data-width=650}
 -----------------------------------------------------------------------
 
-### Chart A
+### South America Food Secruity
 
 ```{r KP Info}
 
@@ -22,13 +22,13 @@ Column {data-width=650}
 Column {.tabset}
 -----------------------------------------------------------------------
 
-### Chart B
+### Adult Population Info
 
 ```{r Adult Info}
 
 ```
 
-### Children
+### Children Population Info
 
 ```{r children info, message=FALSE, warning=FALSE}
 library(tidyverse)
