@@ -62,3 +62,8 @@ stunted %>%
   geom_col() +
   theme(legend.position = "none") +
   labs(title = "Number of children under 5 overweight")
+
+
+install.packages("flexdashboard")
+library(flexdashboard)
+
