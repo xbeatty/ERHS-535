@@ -18,7 +18,7 @@ food_security$Area <- as.factor(food_security$Area)
 View(food_security)
 str(food_security)
 
-```
+
 
 
 ## Selecting Data from south america

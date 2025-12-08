@@ -24,8 +24,97 @@ Column {.tabset}
 
 ### Adult Population Info
 
-```{r Adult Info}
+```{r, libraries}
+library(plotly)
+library(maps)
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(dplyr)
+library(tidyr)
+library(broom)
+library(purrr)
+library(ggplot2)
+library(stringr)
+library(tidytuesdayR)
+library(forcats)
+```
 
+```{r, Adult,  message=FALSE, warning=FALSE, include=FALSE}
+
+food_security <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-10-14/food_security.csv')
+
+food_security$Item <- as.factor(food_security$Item)
+food_security$Area <- as.factor(food_security$Area)
+
+## Selecting Data from south america
+
+food_south <- food_security %>%
+  filter(Area == c("Argentina", "Bolivia", "Brazil", "Chile","Colombia", "Ecuador",
+                   "Guyana", "Paraguay", "Uruguay", "Peru", "Suriname", "Venezuela (Bolivarian Republic of)")  
+  )
+
+# Filter only male & female prevalence
+adult_food <- food_south %>% 
+  filter(Item %in% c(
+    "Prevalence of moderate or severe food insecurity in the male adult population (percent) (3-year average)",
+    "Prevalence of moderate or severe food insecurity in the female adult population (percent) (3-year average)",
+    "Share of dietary energy supply derived from cereals, roots and tubers (percent) (3-year average)"
+  )) %>% 
+  select(Area, Item, Value)
+
+# Average repeated values
+adult_food_clean <- adult_food %>% 
+  group_by(Area, Item) %>% 
+  summarise(Value = mean(Value), .groups = "drop")
+
+#create food map
+food_map <- adult_food_clean %>% 
+  filter(str_detect(Item, "food insecurity")) %>% 
+  mutate(sex = case_when(
+    str_detect(Item, "female") ~ "Female",
+    str_detect(Item, "male") ~ "Male",
+    TRUE ~ NA_character_
+  ))
+
+# Load world map
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+names(world)
+View(world)
+
+#Filter only for countires in SA
+map_sa <- world %>%
+  filter(sovereignt %in% c("Argentina", "Bolivia", "Brazil", "Chile","Colombia", "Ecuador",
+                   "Guyana", "Paraguay", "Uruguay", "Peru", "Suriname", "Venezuela")  
+         )
+
+# Join your data to the map
+map_joined <- map_sa %>% 
+  left_join(food_map, by = c("sovereignt" = "Area"))
+
+```
+
+```{r,Maps,  message=FALSE, warning=FALSE}
+##MAP
+ggplot(map_joined %>% filter(sex == "Female")) +
+  geom_sf(aes(fill = Value), color = "white") +
+  scale_fill_viridis_c(option = "C", na.value = "grey80") +
+  labs(
+    title = "Female Food Insecurity (Moderate or Severe)",
+    fill  = "Percent"
+  ) +
+  theme_minimal()
+
+##MAP
+ggplot(map_joined %>% filter(sex == "Male")) +
+  geom_sf(aes(fill = Value), color = "white") +
+  scale_fill_viridis_c(option = "D", na.value = "grey80") +
+  labs(
+    title = "Male Food Insecurity (Moderate or Severe)",
+    fill  = "Percent"
+  ) +
+  theme_minimal()
 ```
 
 ### Children Population Info
