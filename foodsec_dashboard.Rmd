@@ -34,6 +34,7 @@ Column {.tabset}
 library(tidyverse)
 library(ggplot2)
 library(ggthemes)
+
 food_security <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-10-14/food_security.csv')
 
 food_security$Item <- as.factor(food_security$Item)
