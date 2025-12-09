@@ -8,51 +8,198 @@ output:
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
+library(tidyverse)
+library(plotly)
+library(tidytuesdayR)
+library(forcats)
+library(readr)
+library(stringr)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(maps)
+library(sf)
+
+
+# Load data
+food_security <- read_csv(
+  "https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-10-14/food_security.csv"
+)
+
+food_security$Item <- as.factor(food_security$Item)
+food_security$Area <- as.factor(food_security$Area)
+
+# South America subset
+food_south <- food_security %>%
+  filter(Area %in% c(
+    "Argentina", "Bolivia (Plurinational State of)", "Brazil", "Chile", "Colombia",
+    "Ecuador", "Guyana", "Paraguay", "Uruguay", "Peru", "Suriname",
+    "Venezuela (Bolivarian Republic of)"
+  ))
+
+# KP indicators – food insecurity and undernourishment (all residents)
+kp_indicators <- c(
+  "Number of moderately or severely food insecure people (million) (3-year average)",
+  "Number of moderately or severely food insecure people (million) (annual value)",
+  "Number of severely food insecure people (million) (3-year average)",
+  "Number of severely food insecure people (million) (annual value)",
+  "Number of people undernourished (million) (3-year average)",
+  "Number of people undernourished (million) (annual value)",
+  "Prevalence of moderate or severe food insecurity in the total population (percent) (3-year average)",
+  "Prevalence of moderate or severe food insecurity in the total population (percent) (annual value)",
+  "Prevalence of severe food insecurity in the total population (percent) (3-year average)",
+  "Prevalence of severe food insecurity in the total population (percent) (annual value)",
+  "Prevalence of undernourishment (percent) (3-year average)",
+  "Prevalence of undernourishment (percent) (annual value)"
+)
+
 ```
 
-Column {data-width=650}
+Column {data-width=900}
 -----------------------------------------------------------------------
 
-### South America Food Secruity
+```{r}
 
-```{r KP Info}
+# Choose one KP indicator for all residents, so we can modify this one if we want for a different story
+kp_indicator <- "Prevalence of moderate or severe food insecurity in the total population (percent) (3-year average)"
+
+# Filter to that indicator in South America
+kp_all <- food_south %>%
+  filter(Item == kp_indicator)
+
+# For each country, keep the most recent Year_End...Also can change this to a different yeari f we want
+kp_latest <- kp_all %>%
+  group_by(Area) %>%
+  filter(Year_End == max(Year_End, na.rm = TRUE)) %>%
+  ungroup()
+
+# Clean Area names to match natural earth "sovereignt"
+kp_latest <- kp_latest %>%
+  mutate(
+    Area_clean = as.character(Area),
+    Area_clean = str_replace(Area_clean, " \\(Plurinational State of\\)", ""),
+    Area_clean = str_replace(Area_clean, " \\(Bolivarian Republic of\\)", "")
+  )
+
+# World map and South America subset
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+map_sa <- world %>%
+  filter(sovereignt %in% c(
+    "Argentina", "Bolivia", "Brazil", "Chile", "Colombia", "Ecuador",
+    "Guyana", "Paraguay", "Uruguay", "Peru", "Suriname", "Venezuela"
+  ))
+
+# Join KP data to map by country name
+map_joined_kp <- map_sa %>%
+  left_join(kp_latest, by = c("sovereignt" = "Area_clean"))
+
+# Build interactive map
+p_kp_map <- ggplot(
+  map_joined_kp,
+  aes(
+    text = paste0(
+      "Country: ", sovereignt,
+      "<br>Year_End: ", Year_End,
+      "<br>Value: ", round(Value, 1), " ", Unit
+    )
+  )
+) +
+  geom_sf(aes(fill = Value), color = "white") +
+  scale_fill_viridis_c(option = "C", na.value = "grey80") +
+  labs(
+    title = "Prevalence of moderate or severe food insecurity\nTotal population, South America (latest year)",
+    fill  = "Percent"
+  ) +
+  theme_minimal()
+
+ggplotly(p_kp_map, tooltip = "text")
+
+
+
+### South America – Food insecurity and undernourishment
+
+# Choose a single indicator and year for this pane, again can change this as we see fit.
+kp_indicator <- "Prevalence of moderate or severe food insecurity in the total population (percent) (3-year average)"
+
+latest_year <- max(food_south$Year_End[food_south$Item == kp_indicator], na.rm = TRUE)
+
+kp_data_year <- food_south %>%
+  filter(
+    Item == kp_indicator,
+    Year_End == latest_year
+  )
+
+# Bar plot across South American countries for latest_year
+p_kp <- ggplot(
+  kp_data_year,
+  aes(
+    y = fct_reorder(Area, Value),
+    x = Value,
+    text = paste0(
+      "Area: ", Area,
+      "<br>Value: ", round(Value, 2), " ", Unit,
+      "<br>Year_End: ", Year_End
+    )
+  )
+) +
+  geom_col(fill = "steelblue") +
+  labs(
+    x = "Percent",
+    y = NULL,
+    title = paste0(
+      "Prevalence of moderate or severe food insecurity",
+      " (total population, ", latest_year, ")"
+    )
+  ) +
+  theme_minimal()
+
+ggplotly(p_kp, tooltip = "text")
 
 ```
+
+
+```{r}
+kp_indicator <- "Prevalence of moderate or severe food insecurity in the total population (percent) (3-year average)"
+
+kp_ts_all <- food_south %>%
+  filter(Item == kp_indicator) %>%
+  arrange(Area, Year_End)
+
+p_ts_facets <- ggplot(
+  kp_ts_all,
+  aes(
+    x = Year_End,
+    y = Value,
+    group = Area,
+    text = paste0(
+      "Area: ", Area,
+      "<br>Year_End: ", Year_End,
+      "<br>Value: ", round(Value, 2), " ", Unit
+    )
+  )
+) +
+  geom_line(color = "steelblue") +
+  geom_point(color = "steelblue") +
+  facet_wrap(~ Area) +
+  labs(
+    x = "Year_End",
+    y = "Percent",
+    title = "Trend in food insecurity by country"
+  ) +
+  theme_minimal()
+
+ggplotly(p_ts_facets, tooltip = "text")
+
+```
+
+
 
 Column {.tabset}
 -----------------------------------------------------------------------
 
 ### Adult Population Info
 
-```{r, libraries}
-library(plotly)
-library(maps)
-library(sf)
-library(rnaturalearth)
-library(rnaturalearthdata)
-library(dplyr)
-library(tidyr)
-library(broom)
-library(purrr)
-library(ggplot2)
-library(stringr)
-library(tidytuesdayR)
-library(forcats)
-```
-
 ```{r, Adult,  message=FALSE, warning=FALSE, include=FALSE}
-
-food_security <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-10-14/food_security.csv')
-
-food_security$Item <- as.factor(food_security$Item)
-food_security$Area <- as.factor(food_security$Area)
-
-## Selecting Data from south america
-
-food_south <- food_security %>%
-  filter(Area == c("Argentina", "Bolivia", "Brazil", "Chile","Colombia", "Ecuador",
-                   "Guyana", "Paraguay", "Uruguay", "Peru", "Suriname", "Venezuela (Bolivarian Republic of)")  
-  )
 
 # Filter only male & female prevalence
 adult_food <- food_south %>% 
