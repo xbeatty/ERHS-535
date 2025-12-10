@@ -167,8 +167,12 @@ ggplotly(p_kp, tooltip = "text")
 Horizontal bar chart showing the 3-year average prevalence of moderate to severe food insecurity (%) across selected South American countries, with Peru, Argentina, and Ecuador having the highest rates and some countries omitted due to missing data.
 
 ```{r}
-kp_indicator <- "Prevalence of moderate or severe food insecurity in the total population (percent) (3-year average)"
+library(ggplot2)
+library(plotly)
+library(dplyr)
 
+# (your data prep)
+kp_indicator <- "Prevalence of moderate or severe food insecurity in the total population (percent) (3-year average)"
 food_south$Area <- gsub(" \\(.*\\)", "", food_south$Area)
 
 kp_ts_all <- food_south %>%
@@ -196,10 +200,19 @@ p_ts_facets <- ggplot(
     y = "Percent",
     title = "Trend in food insecurity by country"
   ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1),
-  axis.title.x = element_text(margin = margin(t = 10)))
+  theme_classic() +                                # <-- switched theme
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    axis.title.x = element_text(margin = margin(t = 10)),
+    panel.background = element_rect(fill = "white", color = NA),
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 0.7),
+    panel.spacing = unit(0.6, "lines")
+  )
 
+# static view (recommended to confirm borders)
+print(p_ts_facets)
+
+# interactive (may not show borders reliably)
 ggplotly(p_ts_facets, tooltip = "text")
 
 ```
