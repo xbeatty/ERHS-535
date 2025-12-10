@@ -161,6 +161,8 @@ ggplotly(p_kp, tooltip = "text")
 ```{r}
 kp_indicator <- "Prevalence of moderate or severe food insecurity in the total population (percent) (3-year average)"
 
+food_south$Area <- gsub(" \\(.*\\)", "", food_south$Area)
+
 kp_ts_all <- food_south %>%
   filter(Item == kp_indicator) %>%
   arrange(Area, Year_End)
@@ -186,11 +188,14 @@ p_ts_facets <- ggplot(
     y = "Percent",
     title = "Trend in food insecurity by country"
   ) +
-  theme_minimal()
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+  axis.title.x = element_text(margin = margin(t = 10)))
 
 ggplotly(p_ts_facets, tooltip = "text")
 
 ```
+These plots shows trends in moderate or severe food insecurity across South American countries from 2016–2024. Most countries experienced rising food insecurity over time, with particularly sharp increases in Argentina, Ecuador, Paraguay, and Peru. A few countries, such as Brazil and Uruguay, show relatively lower and more stable levels, while Venezuela remains consistently high.
 
 
 

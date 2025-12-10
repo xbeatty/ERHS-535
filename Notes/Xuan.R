@@ -1,34 +1,33 @@
-library(dplyr)
-library(ggplot2)
-library(forcats)
+kp_indicator <- "Prevalence of moderate or severe food insecurity in the total population (percent) (3-year average)"
 
-children_food_clean <- children_food %>%
-  mutate(
-    Area = as.character(Area),  # ensure it's character
-    Area = str_replace(Area, " \\(Bolivarian Republic of\\)", "")  # remove parentheses
-  )
+kp_ts_all <- food_south %>%
+  filter(Item == kp_indicator) %>%
+  arrange(Area, Year_End)
 
-ggplot(children_food_clean, aes(y = fct_reorder(Area, Value), x = Value, fill = Item)) +
-  geom_col(position = "dodge") +
-  scale_fill_manual(
-    name = "Observation",
-    values = c(
-      "Number of children under 5 years of age who are overweight (modeled estimates) (million)" = "blue",
-      "Number of children under 5 years of age who are stunted (modeled estimates) (million)" = "limegreen"
-    ),
-    labels = c(
-      "Number of children under 5 years of age who are overweight (modeled estimates) (million)" = "Overweight",
-      "Number of children under 5 years of age who are stunted (modeled estimates) (million)" = "Stunted"
+p_ts_facets <- ggplot(
+  kp_ts_all,
+  aes(
+    x = Year_End,
+    y = Value,
+    group = Area,
+    text = paste0(
+      "Area: ", Area,
+      "<br>Year_End: ", Year_End,
+      "<br>Value: ", round(Value, 2), " ", Unit
     )
-  ) +
+  )
+) +
+  geom_line(color = "steelblue") +
+  geom_point(color = "steelblue") +
+  facet_wrap(~ Area) +
   labs(
-    y = NULL,
-    x = "Number of Children (millions)",
-    title = "Nutrition in South American Children Under 5"
+    x = "Year_End",
+    y = "Percent",
+    title = "Trend in food insecurity by country"
   ) +
   theme_minimal() +
-  theme(
-    legend.direction = "vertical",
-    legend.position = "right"
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)
   )
+
+ggplotly(p_ts_facets, tooltip = "text")
 
