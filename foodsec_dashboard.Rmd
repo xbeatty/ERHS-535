@@ -57,7 +57,13 @@ kp_indicators <- c(
 Column {data-width=900}
 -----------------------------------------------------------------------
 
-```{r}
+```{r fig.width=7, fig.height=3}
+
+food_south <- food_south %>%
+  mutate(
+    Area = str_replace(Area, " \\(Plurinational State of\\)", ""),
+    Area = str_replace(Area, " \\(Bolivarian Republic of\\)", "")
+  )
 
 # Choose one KP indicator for all residents, so we can modify this one if we want for a different story
 kp_indicator <- "Prevalence of moderate or severe food insecurity in the total population (percent) (3-year average)"
@@ -107,7 +113,7 @@ p_kp_map <- ggplot(
   geom_sf(aes(fill = Value), color = "white") +
   scale_fill_viridis_c(option = "C", na.value = "grey80") +
   labs(
-    title = "Prevalence of moderate or severe food insecurity\nTotal population, South America (latest year)",
+    title = "Moderate-Severe Food Insecurity in South America: 3-Yr Avg.",
     fill  = "Percent"
   ) +
   theme_minimal()
@@ -129,6 +135,11 @@ kp_data_year <- food_south %>%
     Year_End == latest_year
   )
 
+kp_data_year <- kp_data_year %>%
+  filter(!is.na(Value)) %>%            # remove NAs that break fct_reorder
+  mutate(Area = factor(Area))          # drop unused/empty factor levels
+
+
 # Bar plot across South American countries for latest_year
 p_kp <- ggplot(
   kp_data_year,
@@ -142,21 +153,18 @@ p_kp <- ggplot(
     )
   )
 ) +
-  geom_col(fill = "steelblue") +
+  geom_col(fill = "darkblue") +
   labs(
     x = "Percent",
     y = NULL,
-    title = paste0(
-      "Prevalence of moderate or severe food insecurity",
-      " (total population, ", latest_year, ")"
-    )
+    title = "Moderate-Severe Food Insecurity in South America: 3-Yr Avg."
   ) +
   theme_minimal()
 
 ggplotly(p_kp, tooltip = "text")
 
 ```
-
+Horizontal bar chart showing the 3-year average prevalence of moderate to severe food insecurity (%) across selected South American countries, with Peru, Argentina, and Ecuador having the highest rates and some countries omitted due to missing data.
 
 ```{r}
 kp_indicator <- "Prevalence of moderate or severe food insecurity in the total population (percent) (3-year average)"
@@ -180,8 +188,8 @@ p_ts_facets <- ggplot(
     )
   )
 ) +
-  geom_line(color = "steelblue") +
-  geom_point(color = "steelblue") +
+  geom_line(color = "darkblue") +
+  geom_point(color = "darkblue") +
   facet_wrap(~ Area) +
   labs(
     x = "Year_End",
