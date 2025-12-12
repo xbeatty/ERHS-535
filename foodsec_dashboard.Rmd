@@ -171,9 +171,7 @@ library(ggplot2)
 library(plotly)
 library(dplyr)
 
-# (your data prep)
 kp_indicator <- "Prevalence of moderate or severe food insecurity in the total population (percent) (3-year average)"
-food_south$Area <- gsub(" \\(.*\\)", "", food_south$Area)
 
 kp_ts_all <- food_south %>%
   filter(Item == kp_indicator) %>%
@@ -187,7 +185,7 @@ p_ts_facets <- ggplot(
     group = Area,
     text = paste0(
       "Area: ", Area,
-      "<br>Year_End: ", Year_End,
+      "<br>Year: ", Year_End,
       "<br>Value: ", round(Value, 2), " ", Unit
     )
   )
@@ -196,24 +194,18 @@ p_ts_facets <- ggplot(
   geom_point(color = "darkblue") +
   facet_wrap(~ Area) +
   labs(
-    x = "Year_End",
+    x = "Year",        # Changed axis label
     y = "Percent",
     title = "Trend in food insecurity by country"
   ) +
-  theme_classic() +                                # <-- switched theme
+  theme_bw() +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),
-    axis.title.x = element_text(margin = margin(t = 10)),
-    panel.background = element_rect(fill = "white", color = NA),
-    panel.border = element_rect(color = "black", fill = NA, linewidth = 0.7),
-    panel.spacing = unit(0.6, "lines")
+    axis.title.x = element_text(margin = margin(t = 10))  # Move x label down
   )
 
-# static view (recommended to confirm borders)
-print(p_ts_facets)
-
-# interactive (may not show borders reliably)
 ggplotly(p_ts_facets, tooltip = "text")
+
 
 ```
 These plots shows trends in moderate or severe food insecurity across South American countries from 2016–2024. Most countries experienced rising food insecurity over time, with particularly sharp increases in Argentina, Ecuador, Paraguay, and Peru. A few countries, such as Brazil and Uruguay, show relatively lower and more stable levels, while Venezuela remains consistently high.
