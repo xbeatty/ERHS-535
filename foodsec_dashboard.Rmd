@@ -57,7 +57,7 @@ kp_indicators <- c(
 Column {data-width=900}
 -----------------------------------------------------------------------
 
-```{r fig.width=7, fig.height=3}
+```{r fig.width=7, fig.height=7}
 
 food_south <- food_south %>%
   mutate(
@@ -119,9 +119,9 @@ p_kp_map <- ggplot(
   theme_minimal()
 
 ggplotly(p_kp_map, tooltip = "text")
+```
 
-
-
+```{r fig.width=7, fig.height=3}
 ### South America – Food insecurity and undernourishment
 
 # Choose a single indicator and year for this pane, again can change this as we see fit.
@@ -166,7 +166,7 @@ ggplotly(p_kp, tooltip = "text")
 ```
 Horizontal bar chart showing the 3-year average prevalence of moderate to severe food insecurity (%) across selected South American countries, with Peru, Argentina, and Ecuador having the highest rates and some countries omitted due to missing data.
 
-```{r}
+```{r fig.width=7, fig.height=7}
 library(ggplot2)
 library(plotly)
 library(dplyr)
@@ -260,8 +260,7 @@ map_joined <- map_sa %>%
 
 ```
 
-```{r,Maps,  message=FALSE, warning=FALSE}
-##MAP
+```{r message=FALSE, warning=FALSE}
 ggplot(map_joined %>% filter(sex == "Female")) +
   geom_sf(aes(fill = Value), color = "white") +
   scale_fill_viridis_c(option = "C", na.value = "grey80") +
@@ -271,7 +270,6 @@ ggplot(map_joined %>% filter(sex == "Female")) +
   ) +
   theme_minimal()
 
-##MAP
 ggplot(map_joined %>% filter(sex == "Male")) +
   geom_sf(aes(fill = Value), color = "white") +
   scale_fill_viridis_c(option = "D", na.value = "grey80") +
@@ -280,6 +278,7 @@ ggplot(map_joined %>% filter(sex == "Male")) +
     fill  = "Percent"
   ) +
   theme_minimal()
+
 ```
 
 ### Children Population Info
@@ -336,3 +335,4 @@ ggplot(children_food_clean, aes(y = fct_reorder(Area, Value), x = Value, fill = 
   )
 ```
 Here we are comparing the number of overweight vs stunted children across South America in 2024.Both Colombia and Argentina have similar population sizes, 53 million and 45 million respectively, yet, Argentina has a **significantly smaller** stunted child population compared to Colombia. Peru, which is **7.8% of the total South American population**, has the second highest group of stunted children. Since 2022, Brazil has seen a **decrease in food insecurity** across the total population. This is reflected in the number of children that are overweight in the Brazil population, which could be a product of that trend.
+

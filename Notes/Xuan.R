@@ -1,34 +1,35 @@
-kp_indicator <- "Prevalence of moderate or severe food insecurity in the total population (percent) (3-year average)"
+library(ggplot2)
+library(dplyr)
+library(sf)
+library(rnaturalearth)
+library(viridis)
 
-kp_ts_all <- food_south %>%
-  filter(Item == kp_indicator) %>%
-  arrange(Area, Year_End)
+# Define fixed coordinate limits for South America
+x_limits <- c(-82, -34)  # approx longitude range
+y_limits <- c(-57, 13)   # approx latitude range
 
-p_ts_facets <- ggplot(
-  kp_ts_all,
-  aes(
-    x = Year_End,
-    y = Value,
-    group = Area,
-    text = paste0(
-      "Area: ", Area,
-      "<br>Year: ", Year_End,
-      "<br>Value: ", round(Value, 2), " ", Unit
-    )
-  )
-) +
-  geom_line(color = "darkblue") +
-  geom_point(color = "darkblue") +
-  facet_wrap(~ Area) +
+# Female map
+p_female <- ggplot(map_joined %>% filter(sex == "Female")) +
+  geom_sf(aes(fill = Value), color = "white") +
+  scale_fill_viridis_c(option = "C", na.value = "grey80") +
   labs(
-    x = "Year",        # Changed axis label
-    y = "Percent",
-    title = "Trend in food insecurity by country"
+    title = "Female Food Insecurity (Moderate or Severe)",
+    fill  = "Percent"
   ) +
-  theme_bw() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    axis.title.x = element_text(margin = margin(t = 10))  # Move x label down
-  )
+  coord_sf(xlim = x_limits, ylim = y_limits, expand = FALSE) +
+  theme_minimal()
 
-ggplotly(p_ts_facets, tooltip = "text")
+# Male map
+p_male <- ggplot(map_joined %>% filter(sex == "Male")) +
+  geom_sf(aes(fill = Value), color = "white") +
+  scale_fill_viridis_c(option = "D", na.value = "grey80") +
+  labs(
+    title = "Male Food Insecurity (Moderate or Severe)",
+    fill  = "Percent"
+  ) +
+  coord_sf(xlim = x_limits, ylim = y_limits, expand = FALSE) +
+  theme_minimal()
+
+# Print both plots
+p_female
+p_male
