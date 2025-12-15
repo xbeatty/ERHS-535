@@ -1,7 +1,9 @@
 Project Title: Examining Health and Nutrition in South America
+
 Authors: Xuan Beatty, Madison Johnson, Kapahi Kawai Puaa, Andrea Sanchez Hidalgo
 
 1. Description / Purpose:
+
 This project analyzes health, nutrition, and socio-economic indicators across South American countries, including child and 
 adult health outcomes, GDP, and measures of political stability. It visualizes 
 and explores patterns and relationships among these factors to better understand 
@@ -14,12 +16,14 @@ highlight areas of vulnerability and support evidence-based interventions across
 multiple domains.
 
 2. Installation Instructions
+
 All required packages are located in the foodsec_dashboard.Rmd file, under the
 "setup" R chunk that is not included in the knit.
 The data for this project, an up-to-date global food security survey, 
 can be downloaded directly from github and will require the tidytuesdayR package.
 
 3. Usage
+
 The code in RMarkdown is broken up from the total population of South America to
 tabs containing specific data on adult or children populations. 
 
@@ -32,6 +36,7 @@ food_security: refers to the entire dataset downloaded from github
 food_south: refers to the South American subset
 
 4. Project Structure
+
 ├── Notes/ 
 In this folder you will find the personal codes used to create the total population,
 adult, and children graphs created by the authors
@@ -41,4 +46,5 @@ This folder contains drafts of the presentations we were creating for this final
 This folder contains our first draft for this project. This is NOT out complete final
 
 5. R Information
+
 R version.string R version 4.5.1 (2025-06-13)
