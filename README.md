@@ -17,8 +17,7 @@ multiple domains.
 
 2. Installation Instructions
 
-All required packages are located in the foodsec_dashboard.Rmd file, under the
-"setup" R chunk that is not included in the knit.
+All required packages are located in the FINAL.Rmd file, under the "setup" R chunk that is not included in the knit.
 The data for this project, an up-to-date global food security survey, 
 can be downloaded directly from github and will require the tidytuesdayR package.
 
@@ -32,9 +31,9 @@ Example of downloading data from October 14th, 2025
 food_security <- read_csv(
   "https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-10-14/food_security.csv")
 
-Environments created in this code that are used often:
+Environments created in this code that are used often
 
-food_security: refers to the entire dataset downloaded from github
+food_security: refers to the entire dataset downloaded from github &
 food_south: refers to the South American subset
 
 4. Project Structure
