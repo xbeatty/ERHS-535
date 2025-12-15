@@ -1,34 +1,35 @@
-library(dplyr)
 library(ggplot2)
-library(forcats)
+library(dplyr)
+library(sf)
+library(rnaturalearth)
+library(viridis)
 
-children_food_clean <- children_food %>%
-  mutate(
-    Area = as.character(Area),  # ensure it's character
-    Area = str_replace(Area, " \\(Bolivarian Republic of\\)", "")  # remove parentheses
-  )
+# Define fixed coordinate limits for South America
+x_limits <- c(-82, -34)  # approx longitude range
+y_limits <- c(-57, 13)   # approx latitude range
 
-ggplot(children_food_clean, aes(y = fct_reorder(Area, Value), x = Value, fill = Item)) +
-  geom_col(position = "dodge") +
-  scale_fill_manual(
-    name = "Observation",
-    values = c(
-      "Number of children under 5 years of age who are overweight (modeled estimates) (million)" = "blue",
-      "Number of children under 5 years of age who are stunted (modeled estimates) (million)" = "limegreen"
-    ),
-    labels = c(
-      "Number of children under 5 years of age who are overweight (modeled estimates) (million)" = "Overweight",
-      "Number of children under 5 years of age who are stunted (modeled estimates) (million)" = "Stunted"
-    )
-  ) +
+# Female map
+p_female <- ggplot(map_joined %>% filter(sex == "Female")) +
+  geom_sf(aes(fill = Value), color = "white") +
+  scale_fill_viridis_c(option = "C", na.value = "grey80") +
   labs(
-    y = NULL,
-    x = "Number of Children (millions)",
-    title = "Nutrition in South American Children Under 5"
+    title = "Female Food Insecurity (Moderate or Severe)",
+    fill  = "Percent"
   ) +
-  theme_minimal() +
-  theme(
-    legend.direction = "vertical",
-    legend.position = "right"
-  )
+  coord_sf(xlim = x_limits, ylim = y_limits, expand = FALSE) +
+  theme_minimal()
 
+# Male map
+p_male <- ggplot(map_joined %>% filter(sex == "Male")) +
+  geom_sf(aes(fill = Value), color = "white") +
+  scale_fill_viridis_c(option = "D", na.value = "grey80") +
+  labs(
+    title = "Male Food Insecurity (Moderate or Severe)",
+    fill  = "Percent"
+  ) +
+  coord_sf(xlim = x_limits, ylim = y_limits, expand = FALSE) +
+  theme_minimal()
+
+# Print both plots
+p_female
+p_male
