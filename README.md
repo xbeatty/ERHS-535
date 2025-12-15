@@ -1,30 +1,25 @@
 Project Title: Examining Health and Nutrition in South America
+Authors: Xuan Beatty, Madison Johnson, Kapahi Kawai Puaa, Andrea Sanchez Hidalgo
 
-Description / Purpose: This project analyzes health, nutrition, and 
-socio-economic indicators across South American countries, including child and 
+1. Description / Purpose:
+This project analyzes health, nutrition, and socio-economic indicators across South American countries, including child and 
 adult health outcomes, GDP, and measures of political stability. It visualizes 
 and explores patterns and relationships among these factors to better understand 
-how economic and political contexts influence population health.
-
-The project exists to provide a comprehensive, data-driven perspective on the 
+how economic and political contexts influence population health.The project exists to provide a comprehensive, data-driven perspective on the 
 multiple determinants of health, enabling researchers, policymakers, and 
 organizations to identify correlations and trends that may inform public health 
-strategies.
-
-By integrating nutrition, health, economic, and political data, the project 
+strategies.By integrating nutrition, health, economic, and political data, the project 
 addresses the problem of fragmented analysis, offering a holistic view that can 
 highlight areas of vulnerability and support evidence-based interventions across 
 multiple domains.
 
-1. Installation Instructions
-
-You will locate all required packages in the foodsec_dashboard.Rmd file.
-The data for this project, an up-to-date national food security survey, 
+2. Installation Instructions
+All required packages are located in the foodsec_dashboard.Rmd file, under the
+"setup" R chunk that is not included in the knit.
+The data for this project, an up-to-date global food security survey, 
 can be downloaded directly from github and will require the tidytuesdayR package.
-All packages and installation methods are located in the first r chunk, "setup."
 
-2. Usage
-
+3. Usage
 The code in RMarkdown is broken up from the total population of South America to
 tabs containing specific data on adult or children populations. 
 
@@ -36,24 +31,14 @@ Environments created in this code that are used often:
 food_security: refers to the entire dataset downloaded from github
 food_south: refers to the South American subset
 
-3. Project Structure
-
+4. Project Structure
 ├── Notes/ 
 In this folder you will find the personal codes used to create the total population,
 adult, and children graphs created by the authors
-├── code/  
-├── writing/  
-└── README.md
+├── Presentations/  
+This folder contains drafts of the presentations we were creating for this final
+├── Draft_One/  
+This folder contains our first draft for this project. This is NOT out complete final
 
-6. Requirements
-
+5. R Information
 R version.string R version 4.5.1 (2025-06-13)
-
-7. Authors / Contributors
-
-Authors: Xuan Beatty, Madison Johnson, Kapahi Kawai Puaa, Andrea Sanchez Hidalgo
-
-Collaborators (if any)
-
-8. License (optional for class projects)
-9. Acknowledgements (optional)
