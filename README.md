@@ -16,41 +16,42 @@ addresses the problem of fragmented analysis, offering a holistic view that can
 highlight areas of vulnerability and support evidence-based interventions across 
 multiple domains.
 
-3. Installation Instructions
+1. Installation Instructions
 
-How to install packages
+You will locate all required packages in the foodsec_dashboard.Rmd file.
+The data for this project, an up-to-date national food security survey, 
+can be downloaded directly from github and will require the tidytuesdayR package.
+All packages and installation methods are located in the first r chunk, "setup."
 
-How to set up the project directory
+2. Usage
 
-Anything they must download
+The code in RMarkdown is broken up from the total population of South America to
+tabs containing specific data on adult or children populations. 
 
-4. Usage
+Example of downloading data from October 14th, 2025
+food_security <- read_csv(
+  "https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-10-14/food_security.csv")
 
-How to run the code
+Environments created in this code that are used often:
+food_security: refers to the entire dataset downloaded from github
+food_south: refers to the South American subset
 
-Example commands or workflows
+3. Project Structure
 
-How to load data or run analyses
-
-5. Project Structure
-
-Briefly describe important folders/files
-Example:
-
-├── data/  
+├── Notes/ 
+In this folder you will find the personal codes used to create the total population,
+adult, and children graphs created by the authors
 ├── code/  
 ├── writing/  
 └── README.md
 
 6. Requirements
 
-R version / Python version
-
-Required packages
+R version.string R version 4.5.1 (2025-06-13)
 
 7. Authors / Contributors
 
-Your name
+Authors: Xuan Beatty, Madison Johnson, Kapahi Kawai Puaa, Andrea Sanchez Hidalgo
 
 Collaborators (if any)
 
