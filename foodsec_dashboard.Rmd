@@ -332,5 +332,5 @@ ggplot(children_food_clean, aes(y = fct_reorder(Area, Value), x = Value, fill = 
     legend.position = "right"
   )
 ```
-Here we are comparing the number of overweight vs stunted children across South America in 2024.Both Colombia and Argentina have similar population sizes, 53 million and 45 million respectively, yet, Argentina has a **significantly smaller** stunted child population compared to Colombia. Peru, which is **7.8% of the total South American population**, has the second highest group of stunted children. Since 2022, Brazil has seen a **decrease in food insecurity** across the total population. This is reflected in the number of children that are overweight in the Brazil population, which could be a product of that trend.
+Here we are comparing the number of overweight vs stunted children across South America in 2024. **One.** Colombia and Argentina with similar population sizes of 53 million and 45 million respectively, yet, Argentina has a significantly smaller stunted child population compared to Colombia. **Two.** Since 2022, Brazil has seen a decrease in food insecurity across the total population. This is reflected in the number of children that are overweight in the Brazil population, which could be a product of that trend.
 
