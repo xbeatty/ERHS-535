@@ -28,10 +28,12 @@ The code in RMarkdown is broken up from the total population of South America to
 tabs containing specific data on adult or children populations. 
 
 Example of downloading data from October 14th, 2025
+
 food_security <- read_csv(
   "https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-10-14/food_security.csv")
 
 Environments created in this code that are used often:
+
 food_security: refers to the entire dataset downloaded from github
 food_south: refers to the South American subset
 
@@ -40,8 +42,10 @@ food_south: refers to the South American subset
 ├── Notes/ 
 In this folder you will find the personal codes used to create the total population,
 adult, and children graphs created by the authors
+
 ├── Presentations/  
 This folder contains drafts of the presentations we were creating for this final
+
 ├── Draft_One/  
 This folder contains our first draft for this project. This is NOT out complete final
 
